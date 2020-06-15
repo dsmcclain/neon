@@ -1,0 +1,35 @@
+
+.container {
+  background-color: $primary;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.title {
+  color: white;
+  font-size: 40px;
+  grid-column: 1 / -1;
+}
+
+.board-wrapper {
+  display: grid;
+    grid-template-columns: repeat(9, 10vh);
+    grid-template-rows: repeat(9, 10vh);
+    grid-template-areas: "a73 a74 a75 a76 a77 a78 a79 a80 a81"
+                        "a72 a43 a44 a45 a46 a47 a48 a49 a50"
+                        "a71 a42 a21 a22 a23 a24 a25 a26 a51"
+                        "a70 a41 a20 a7  a8  a9  a10 a27 a52"
+                        "a69 a40 a19 a6  a1  a2  a11 a28 a53"
+                        "a68 a39 a18 a5  a4  a3  a12 a29 a54"
+                        "a67 a38 a17 a16 a15 a14 a13 a30 a55"
+                        "a66 a37 a36 a35 a34 a33 a32 a31 a56"
+                        "a65 a64 a63 a62 a61 a60 a59 a58 a57";
+    outline: 2px solid white;
+    padding: 5px;
+    grid-column: 2 / 8;
+}
+
+.footer-section {
+  grid-column: 1 / -1;
+}
