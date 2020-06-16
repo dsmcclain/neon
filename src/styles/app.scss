@@ -16,7 +16,7 @@
   display: grid;
     grid-template-columns: repeat(9, 10vh);
     grid-template-rows: repeat(9, 10vh);
-    grid-template-areas: "a73 a74 a75 a76 a77 a78 a79 a80 a81"
+    grid-template-areas:"a73 a74 a75 a76 a77 a78 a79 a80 a81"
                         "a72 a43 a44 a45 a46 a47 a48 a49 a50"
                         "a71 a42 a21 a22 a23 a24 a25 a26 a51"
                         "a70 a41 a20 a7  a8  a9  a10 a27 a52"
@@ -32,4 +32,10 @@
 
 .footer-section {
   grid-column: 1 / -1;
+}
+
+@for $i from 1 through 81 {
+  .cell-wrapper-#{$i} {
+    grid-area: a#{$i}
+  }
 }
