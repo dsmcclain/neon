@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Board",
@@ -14,31 +14,19 @@ export default {
     id: { type: Number, required: true }
   },
 
-  data: function() {
-    return {
-      value: 0
-    };
-  },
-
   computed: {
-    ...mapGetters(["allCells"])
-  },
+    ...mapGetters(["allCells"]),
 
-  methods: {
-    ...mapActions(["setCell"]),
-
-    getRandomInt: function(min, max) {
-      return Math.floor(Math.random() * (max - min)) + min;
-    },
-
-    getImg(num) {
-      return require("../assets/images/" + num + ".png");
+    value: function() {
+      return this.$store.state.cells.filter(cell => cell.id === this.id)[0]
+        .value;
     }
   },
 
-  created() {
-    this.value = this.getRandomInt(1, 6);
-    this.setCell({ id: this.id, value: this.value });
+  methods: {
+    getImg(num) {
+      return num ? require("../assets/images/" + num + ".png") : null;
+    }
   }
 };
 </script>
