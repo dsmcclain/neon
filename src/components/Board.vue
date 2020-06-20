@@ -43,8 +43,7 @@ export default {
     },
 
     createBoard: function() {
-      this.setCell({ id: 1, value: 5 });
-      for (let num = 2; num < 82; num++) {
+      for (let num = 1; num < 82; num++) {
         this.setCell({
           id: num,
           value: 0
