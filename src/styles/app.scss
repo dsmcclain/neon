@@ -35,7 +35,7 @@
 }
 
 @for $i from 1 through 81 {
-  .cell-wrapper-#{$i} {
+  .tile-wrapper-#{$i} {
     grid-area: a#{$i}
   }
 }

@@ -4,30 +4,30 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 const state = {
-  cells: []
+  tiles: []
 };
 
 const getters = {
-  allCells: state => state.cells,
-  openCells: state => state.cells.filter(cell => cell.value === 0),
-  lowestOpenCell: (state, getters) =>
-    getters.openCells.sort((a, b) => a.id - b.id)[0]
+  allTiles: state => state.tiles,
+  openTiles: state => state.tiles.filter(tile => tile.value === 0),
+  lowestOpenTile: (state, getters) =>
+    getters.openTiles.sort((a, b) => a.id - b.id)[0]
 };
 
 const actions = {
-  setCell({ commit }, cell) {
-    commit("setCell", cell);
+  setTile({ commit }, tile) {
+    commit("setTile", tile);
   }
 };
 
 const mutations = {
-  setCell(state, data) {
-    const cell = state.cells.find(cell => cell.id === data.id);
-    if (cell) {
-      const index = state.cells.indexOf(cell);
-      Vue.set(state.cells, index, data);
+  setTile(state, data) {
+    const tile = state.tiles.find(tile => tile.id === data.id);
+    if (tile) {
+      const index = state.tiles.indexOf(tile);
+      Vue.set(state.tiles, index, data);
     } else {
-      state.cells.push(data);
+      state.tiles.push(data);
     }
   }
 };

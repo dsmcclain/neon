@@ -1,7 +1,7 @@
 <template>
   <div class="board-wrapper">
-    <div v-for="num in 81" :class="`cell-wrapper-${num}`" :key="num">
-      <Cell :id="num"></Cell>
+    <div v-for="num in 81" :class="`tile-wrapper-${num}`" :key="num">
+      <Tile :id="num"></Tile>
     </div>
   </div>
 </template>
@@ -9,40 +9,40 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import helpers from "../mixins/helpers.js";
-import Cell from "./Cell.vue";
+import Tile from "./Tile.vue";
 
 export default {
   name: "Board",
   mixins: [helpers],
-  components: { Cell },
+  components: { Tile },
 
   computed: {
-    ...mapGetters(["openCells", "allCells", "lowestOpenCell"])
+    ...mapGetters(["openTiles", "allTiles", "lowestOpenTile"])
   },
 
   methods: {
-    ...mapActions(["setCell"]),
+    ...mapActions(["setTile"]),
 
-    fillEmptyCell: function(gameId) {
-      if (this.lowestOpenCell === undefined) {
+    fillEmptyTile: function(gameId) {
+      if (this.lowestOpenTile === undefined) {
         console.log("game over");
         clearInterval(gameId);
       } else {
         const value = this.getRandomInt(1, 6);
-        this.setCell({
-          id: this.lowestOpenCell.id,
+        this.setTile({
+          id: this.lowestOpenTile.id,
           value: value
         });
       }
     },
 
     runGame: function() {
-      const gameId = setInterval(() => this.fillEmptyCell(gameId), 1000);
+      const gameId = setInterval(() => this.fillEmptyTile(gameId), 1000);
     },
 
     createBoard: function() {
       for (let num = 1; num < 82; num++) {
-        this.setCell({
+        this.setTile({
           id: num,
           value: 0
         });

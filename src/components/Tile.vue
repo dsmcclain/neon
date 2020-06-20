@@ -1,6 +1,7 @@
 <template>
-  <div class="cell" :id="`cell_${id}`">
-    <img :src="getImg(value)" class="tile-image" v-on:click="rotate" />
+  <div class="tile" :id="`tile_${id}`">
+    <p>{{ id }}</p>
+    <!-- <img :src="getImg(value)" class="tile-image" v-on:click="rotate" /> -->
   </div>
 </template>
 
@@ -17,16 +18,16 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["allCells"]),
+    ...mapGetters(["allTiles"]),
 
     value: function() {
-      return this.$store.state.cells.filter(cell => cell.id === this.id)[0]
+      return this.$store.state.tiles.filter(tile => tile.id === this.id)[0]
         .value;
     }
   },
 
   methods: {
-    ...mapActions(["setCell"]),
+    ...mapActions(["setTile"]),
 
     getImg: function(num) {
       return num ? require("../assets/images/" + num + ".png") : null;
@@ -34,7 +35,7 @@ export default {
 
     rotate: function() {
       const newVal = constants.ROTATIONS[this.value];
-      this.setCell({
+      this.setTile({
         id: this.id,
         value: newVal
       });
