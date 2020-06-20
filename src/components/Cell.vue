@@ -6,9 +6,11 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-
+import constants from "../mixins/constants.js";
+;
 export default {
   name: "Board",
+  mixins: [constants],
 
   props: {
     id: { type: Number, required: true }
@@ -31,26 +33,10 @@ export default {
     },
 
     rotate: function() {
-      let num = 0;
-      switch (this.value) {
-        case 1:
-          num = 2;
-          break;
-        case 2:
-          num = 1;
-          break;
-        case 3:
-        case 4:
-        case 5:
-          num = this.value + 1;
-          break;
-        case 6:
-          num = 3;
-          break;
-      }
+      const newVal = constants.ROTATIONS[this.value];
       this.setCell({
         id: this.id,
-        value: num
+        value: newVal
       });
     }
   }

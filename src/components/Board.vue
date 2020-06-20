@@ -8,10 +8,12 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import helpers from "../mixins/helpers.js";
 import Cell from "./Cell.vue";
 
 export default {
   name: "Board",
+  mixins: [helpers],
   components: { Cell },
 
   computed: {
@@ -20,10 +22,6 @@ export default {
 
   methods: {
     ...mapActions(["setCell"]),
-
-    getRandomInt: function(min, max) {
-      return Math.floor(Math.random() * (max - min)) + min;
-    },
 
     fillEmptyCell: function(gameId) {
       if (this.lowestOpenCell === undefined) {
