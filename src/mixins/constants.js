@@ -10,6 +10,13 @@ export default Object.freeze({
     6: ["west", "north"]
   },
 
+  KEYS: {
+    north: [1, 4, 5],
+    east: [2, 5, 6],
+    south: [1, 3, 6],
+    west: [2, 3, 4]
+  },
+
   NEIGHBORS: {
     1: { north: 8, east: 2, south: 4, west: 6 },
     2: { north: 9, east: 11, south: 3, west: 1 },

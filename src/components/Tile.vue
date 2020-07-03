@@ -1,6 +1,6 @@
 <template>
   <div class="tile" :id="`tile_${id}`">
-    <img :src="getImg(value)" class="tile-image" v-on:click="rotate" />
+    <img :src="getImg(value)" class="tile-image" v-on:click="rotateAndCheck" />
   </div>
 </template>
 
@@ -17,6 +17,13 @@ export default {
     id: { type: Number, required: true }
   },
 
+  data() {
+    return {
+      path: [],
+      looped: false
+    };
+  },
+
   computed: {
     ...mapGetters(["allTiles"]),
 
@@ -25,22 +32,36 @@ export default {
         .value;
     },
 
+    neighbors: function() {
+      return constants.NEIGHBORS[this.id];
+    },
+
+    doors: function() {
+      return constants.DOORS[this.value];
+    },
+
     linked: function() {
       if (this.value === 0) {
         return false;
       }
-      for (const direction of constants.DOORS[this.value]) {
-        let neighbor = constants.NEIGHBORS[this.id][direction];
+      for (const direction of this.doors) {
+        let neighbor = this.neighbors[direction];
+        if (!neighbor) {
+          return false;
+        }
         let neighborValue = this.allTiles[neighbor - 1].value;
-        if (
-          !constants.DOORS[neighborValue].includes(
-            this.oppositeDirection(direction)
-          )
-        ) {
+        if (!constants.KEYS[direction].includes(neighborValue)) {
           return false;
         }
       }
       return true;
+    }
+  },
+
+  watch: {
+    looped: function() {
+      // turn off click
+      this.disappearLoop(this.path);
     }
   },
 
@@ -51,12 +72,61 @@ export default {
       return num ? require("../assets/images/" + num + ".png") : null;
     },
 
-    rotate: function() {
+    checkLoop: function() {
+      if (!this.linked) {
+        this.looped = false;
+        return false;
+      } else {
+        this.path = [this.id];
+        let direction = this.doors[0];
+        let index = this.neighbors[direction] - 1;
+        let nextTile = this.allTiles[index];
+        this.chartPath(nextTile, index, direction);
+      }
+    },
+
+    chartPath: function(tile, index, direction) {
+      if (tile.id === this.path[0]) {
+        //need to make sure initial tile is pointing back to close the loop
+        this.looped = true;
+        return true;
+      } else if (this.allTiles[index].linked) {
+        this.looped = false;
+        return false;
+      } else {
+        this.path.push(tile.id);
+        const alreadyChecked = this.oppositeDirection(direction);
+        direction = constants.DOORS[tile.value].filter(
+          door => !door.includes(alreadyChecked)
+        );
+        index = constants.NEIGHBORS[tile.id][direction] - 1;
+        tile = this.allTiles[index];
+        this.chartPath(tile, index, direction);
+      }
+    },
+
+    rotateAndCheck: function() {
       const newVal = constants.ROTATIONS[this.value];
       this.setTile({
         id: this.id,
         value: newVal
       });
+      this.checkLoop();
+    },
+
+    disappearLoop: function(path) {
+      //set global pause variable
+      let index = 0;
+      const loopId = setInterval(() => {
+        if (index > path.length - 1) {
+          clearInterval(loopId);
+        }
+        this.setTile({
+          id: path[index],
+          value: 0
+        });
+        index++;
+      }, 75);
     }
   }
 };
