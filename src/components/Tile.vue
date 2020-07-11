@@ -19,8 +19,7 @@ export default {
 
   data() {
     return {
-      path: [],
-      looped: false
+      path: []
     };
   },
 
@@ -30,6 +29,11 @@ export default {
     value: function() {
       return this.$store.state.tiles.filter(tile => tile.id === this.id)[0]
         .value;
+    },
+
+    looped: function() {
+      return this.$store.state.tiles.filter(tile => tile.id === this.id)[0]
+        .looped;
     },
 
     neighbors: function() {
@@ -60,13 +64,15 @@ export default {
 
   watch: {
     looped: function() {
-      // turn off click
-      this.disappearLoop(this.path);
+      if (this.looped === true) {
+        this.disableTiles();
+        this.disappearLoop(this.path);
+      }
     }
   },
 
   methods: {
-    ...mapActions(["setTile"]),
+    ...mapActions(["setTile", "setValue", "setLooped"]),
 
     getImg: function(num) {
       return num ? require("../assets/images/" + num + ".png") : null;
@@ -74,7 +80,6 @@ export default {
 
     checkLoop: function() {
       if (!this.linked) {
-        this.looped = false;
         return false;
       } else {
         this.path = [this.id];
@@ -87,11 +92,19 @@ export default {
 
     chartPath: function(tile, index, direction) {
       if (tile.id === this.path[0]) {
-        //need to make sure initial tile is pointing back to close the loop
-        this.looped = true;
-        return true;
+        const finalTile = this.allTiles[this.path[0] - 1].value;
+        if (
+          constants.DOORS[finalTile].includes(this.oppositeDirection(direction))
+        ) {
+          this.setLooped({
+            id: this.id,
+            looped: true
+          });
+          return true;
+        } else {
+          return false;
+        }
       } else if (this.allTiles[index].linked) {
-        this.looped = false;
         return false;
       } else {
         this.path.push(tile.id);
@@ -107,23 +120,34 @@ export default {
 
     rotateAndCheck: function() {
       const newVal = constants.ROTATIONS[this.value];
-      this.setTile({
+      this.setValue({
         id: this.id,
         value: newVal
       });
       this.checkLoop();
     },
 
-    disappearLoop: function(path) {
+    disableTiles: function() {
       //set global pause variable
+      for (let id of this.path) {
+        this.setTile({
+          id: id,
+          value: 7,
+          looped: false
+        });
+      }
+    },
+
+    disappearLoop: function(path) {
       let index = 0;
       const loopId = setInterval(() => {
         if (index > path.length - 1) {
           clearInterval(loopId);
         }
-        this.setTile({
+        this.setValue({
           id: path[index],
-          value: 0
+          value: 0,
+          looped: false
         });
         index++;
       }, 75);

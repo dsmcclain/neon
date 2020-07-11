@@ -17,6 +17,14 @@ const getters = {
 const actions = {
   setTile({ commit }, tile) {
     commit("setTile", tile);
+  },
+
+  setValue({ commit }, tile) {
+    commit("setValue", tile);
+  },
+
+  setLooped({ commit }, tile) {
+    commit("setLooped", tile);
   }
 };
 
@@ -29,6 +37,20 @@ const mutations = {
     } else {
       state.tiles.push(data);
     }
+  },
+
+  setValue(state, data) {
+    const tile = state.tiles.find(tile => tile.id === data.id);
+    const index = state.tiles.indexOf(tile);
+    tile.value = data.value;
+    Vue.set(state.tiles, index, data);
+  },
+
+  setLooped(state, data) {
+    const tile = state.tiles.find(tile => tile.id === data.id);
+    const index = state.tiles.indexOf(tile);
+    tile.looped = data.looped;
+    Vue.set(state.tiles, index, data);
   }
 };
 

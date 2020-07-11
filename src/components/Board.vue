@@ -31,7 +31,8 @@ export default {
         const value = this.getRandomInt(1, 6);
         this.setTile({
           id: this.lowestOpenTile.id,
-          value: value
+          value: value,
+          looped: false
         });
       }
     },
@@ -44,7 +45,8 @@ export default {
       for (let num = 1; num < 82; num++) {
         this.setTile({
           id: num,
-          value: 0
+          value: 0,
+          looped: false
         });
       }
     }
