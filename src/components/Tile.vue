@@ -45,7 +45,7 @@ export default {
     },
 
     linked: function() {
-      if (this.value === 0) {
+      if (this.value === 0 || this.doors === undefined) {
         return false;
       }
       for (const direction of this.doors) {
@@ -63,6 +63,14 @@ export default {
   },
 
   watch: {
+    value: function(newVal, oldVal) {
+      if (newVal !== undefined && oldVal !== undefined) {
+        if (this.linked && oldVal === 0) {
+          this.checkLoop();
+        }
+      }
+    },
+
     looped: function() {
       if (this.looped === true) {
         this.disableTiles();
@@ -86,6 +94,9 @@ export default {
         let direction = this.doors[0];
         let index = this.neighbors[direction] - 1;
         let nextTile = this.allTiles[index];
+        if (!nextTile) {
+          return false;
+        }
         this.chartPath(nextTile, index, direction);
       }
     },
@@ -104,7 +115,10 @@ export default {
         } else {
           return false;
         }
-      } else if (this.allTiles[index].linked) {
+      } else if (
+        this.allTiles[index].linked ||
+        this.allTiles[index].value === 0
+      ) {
         return false;
       } else {
         this.path.push(tile.id);
@@ -114,6 +128,9 @@ export default {
         );
         index = constants.NEIGHBORS[tile.id][direction] - 1;
         tile = this.allTiles[index];
+        if (!tile) {
+          return false;
+        }
         this.chartPath(tile, index, direction);
       }
     },
@@ -141,7 +158,7 @@ export default {
     disappearLoop: function(path) {
       let index = 0;
       const loopId = setInterval(() => {
-        if (index > path.length - 1) {
+        if (index > path.length - 2) {
           clearInterval(loopId);
         }
         this.setValue({
