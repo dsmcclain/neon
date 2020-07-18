@@ -24,7 +24,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["allTiles"]),
+    ...mapGetters(["allTiles", "getScore"]),
 
     value: function() {
       return this.$store.state.tiles.filter(tile => tile.id === this.id)[0]
@@ -80,7 +80,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["setTile", "setValue", "setLooped"]),
+    ...mapActions(["incrementScore", "setTile", "setValue", "setLooped"]),
 
     getImg: function(num) {
       return num ? require("../assets/images/" + num + ".png") : null;
@@ -157,16 +157,18 @@ export default {
 
     disappearLoop: function(path) {
       let index = 0;
+      this.incrementScore(path.length);
       const loopId = setInterval(() => {
-        if (index > path.length - 2) {
+        if (index > path.length - 1) {
           clearInterval(loopId);
+        } else {
+          this.setValue({
+            id: path[index],
+            value: 0,
+            looped: false
+          });
+          index++;
         }
-        this.setValue({
-          id: path[index],
-          value: 0,
-          looped: false
-        });
-        index++;
       }, 75);
     }
   }

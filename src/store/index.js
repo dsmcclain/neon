@@ -4,10 +4,12 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 const state = {
-  tiles: []
+  tiles: [],
+  score: 0
 };
 
 const getters = {
+  getScore: state => state.score,
   allTiles: state => state.tiles,
   openTiles: state => state.tiles.filter(tile => tile.value === 0),
   lowestOpenTile: (state, getters) =>
@@ -15,6 +17,10 @@ const getters = {
 };
 
 const actions = {
+  incrementScore({ commit }, int) {
+    commit("incrementScore", int);
+  },
+
   setTile({ commit }, tile) {
     commit("setTile", tile);
   },
@@ -29,6 +35,10 @@ const actions = {
 };
 
 const mutations = {
+  incrementScore(state, data) {
+    state.score += data;
+  },
+
   setTile(state, data) {
     const tile = state.tiles.find(tile => tile.id === data.id);
     if (tile) {
