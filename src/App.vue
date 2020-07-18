@@ -7,7 +7,7 @@
       </div>
       <h1 class="title score-label">SCORE</h1>
       <div class="controls">
-        <button class="start">START</button>
+        <button class="start" v-on:click="startGame()">START</button>
         <button class="pause">PAUSE</button>
       </div>
     </div>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import Board from "./components/Board.vue";
 
 export default {
@@ -29,6 +29,15 @@ export default {
 
   computed: {
     ...mapGetters(["getScore"])
+  },
+
+  methods: {
+    ...mapActions(["setStatus"]),
+
+    startGame: function() {
+      console.log('starting');
+      this.setStatus(1);
+    }
   }
 };
 </script>

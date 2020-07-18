@@ -5,11 +5,13 @@ Vue.use(Vuex);
 
 const state = {
   tiles: [],
-  score: 0
+  score: 0,
+  status: 0
 };
 
 const getters = {
   getScore: state => state.score,
+  getStatus: state => state.status,
   allTiles: state => state.tiles,
   openTiles: state => state.tiles.filter(tile => tile.value === 0),
   lowestOpenTile: (state, getters) =>
@@ -19,6 +21,10 @@ const getters = {
 const actions = {
   incrementScore({ commit }, int) {
     commit("incrementScore", int);
+  },
+
+  setStatus({ commit }, status) {
+    commit("setStatus", status);
   },
 
   setTile({ commit }, tile) {
@@ -37,6 +43,10 @@ const actions = {
 const mutations = {
   incrementScore(state, data) {
     state.score += data;
+  },
+
+  setStatus(state, data) {
+    state.status = data;
   },
 
   setTile(state, data) {

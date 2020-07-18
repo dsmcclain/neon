@@ -16,17 +16,37 @@ export default {
   mixins: [helpers],
   components: { Tile },
 
+  data() {
+    return {
+      procId: null
+    };
+  },
+
   computed: {
-    ...mapGetters(["openTiles", "allTiles", "lowestOpenTile"])
+    ...mapGetters(["openTiles", "allTiles", "lowestOpenTile"]),
+
+    status: function() {
+      return this.$store.state.status;
+    }
+  },
+
+  watch: {
+    status: function(newVal) {
+      console.log(newVal)
+      if (newVal === 1) {
+        this.runGame();
+      } else if (newVal === 0) {
+        clearInterval(this.procId);
+      }
+    }
   },
 
   methods: {
-    ...mapActions(["setTile"]),
+    ...mapActions(["setStatus", "setTile"]),
 
-    fillEmptyTile: function(gameId) {
+    fillEmptyTile: function() {
       if (this.lowestOpenTile === undefined) {
-        console.log("game over");
-        clearInterval(gameId);
+        this.setStatus(0);
       } else {
         const value = this.getRandomInt(1, 6);
         this.setTile({
@@ -38,7 +58,7 @@ export default {
     },
 
     runGame: function() {
-      const gameId = setInterval(() => this.fillEmptyTile(gameId), 1000);
+      this.procId = setInterval(() => this.fillEmptyTile(), 1000);
     },
 
     createBoard: function() {
@@ -54,10 +74,6 @@ export default {
 
   created() {
     this.createBoard();
-  },
-
-  mounted() {
-    this.runGame();
   }
 };
 </script>
