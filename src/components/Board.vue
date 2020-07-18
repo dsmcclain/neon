@@ -1,5 +1,5 @@
 <template>
-  <div class="board-wrapper">
+  <div class="board">
     <div v-for="num in 81" :class="`tile-wrapper-${num}`" :key="num">
       <Tile :id="num"></Tile>
     </div>

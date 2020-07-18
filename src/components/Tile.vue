@@ -24,7 +24,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["allTiles", "getScore"]),
+    ...mapGetters(["allTiles"]),
 
     value: function() {
       return this.$store.state.tiles.filter(tile => tile.id === this.id)[0]
