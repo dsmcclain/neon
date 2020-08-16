@@ -1,7 +1,9 @@
 <template>
-  <div class="board">
-    <div v-for="num in 81" :class="`tile-wrapper-${num}`" :key="num">
-      <Tile :id="num"></Tile>
+  <div class="board-wrapper">
+    <div class="board">
+      <div v-for="num in 81" :class="`tile-wrapper-${num}`" :key="num">
+        <Tile :id="num"></Tile>
+      </div>
     </div>
   </div>
 </template>
@@ -23,7 +25,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["openTiles", "allTiles", "lowestOpenTile"]),
+    ...mapGetters(["openTiles", "allTiles", "lowestOpenTile", "anyLooped"]),
 
     status: function() {
       return this.$store.state.status;
@@ -32,11 +34,21 @@ export default {
 
   watch: {
     status: function(newVal) {
-      console.log(newVal)
-      if (newVal === 1) {
+      if (newVal === "go") {
         this.runGame();
-      } else if (newVal === 0) {
+      } else if (newVal === "pause" || newVal === "wait") {
         clearInterval(this.procId);
+      } else if (newVal === "stop") {
+        //extra logic to end game
+        clearInterval(this.procId);
+      }
+    },
+
+    anyLooped: function(newVal) {
+      if (newVal) {
+        this.setStatus("wait");
+      } else {
+        this.setStatus("go");
       }
     }
   },
@@ -46,7 +58,8 @@ export default {
 
     fillEmptyTile: function() {
       if (this.lowestOpenTile === undefined) {
-        this.setStatus(0);
+        this.setStatus("stop");
+        this.gameOver();
       } else {
         const value = this.getRandomInt(1, 6);
         this.setTile({
@@ -59,6 +72,10 @@ export default {
 
     runGame: function() {
       this.procId = setInterval(() => this.fillEmptyTile(), 1000);
+    },
+
+    gameOver: function() {
+      console.log("game over");
     },
 
     createBoard: function() {

@@ -145,7 +145,6 @@ export default {
     },
 
     disableTiles: function() {
-      //set global pause variable
       for (let id of this.path) {
         this.setTile({
           id: id,

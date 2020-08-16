@@ -6,7 +6,7 @@ Vue.use(Vuex);
 const state = {
   tiles: [],
   score: 0,
-  status: 0
+  status: "stop"
 };
 
 const getters = {
@@ -15,7 +15,8 @@ const getters = {
   allTiles: state => state.tiles,
   openTiles: state => state.tiles.filter(tile => tile.value === 0),
   lowestOpenTile: (state, getters) =>
-    getters.openTiles.sort((a, b) => a.id - b.id)[0]
+    getters.openTiles.sort((a, b) => a.id - b.id)[0],
+  anyLooped: state => state.tiles.some(tile => tile.value === 7)
 };
 
 const actions = {
