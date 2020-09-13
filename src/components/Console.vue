@@ -1,6 +1,7 @@
 <template>
   <div class="console">
     <h3 class="title name">NEON</h3>
+    <h4 class="by-line">by dylan</h4>
     <div class="display-score">
       <div class="score">{{ this.getScore }}</div>
     </div>

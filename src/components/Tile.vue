@@ -80,7 +80,11 @@ export default {
   },
 
   methods: {
-    ...mapActions(["incrementScore", "setTile", "setValue", "setLooped", "setStatus"]),
+    ...mapActions(["incrementScore",
+      "setTile",
+      "setValue",
+      "setLooped",
+      "setStatus"]),
 
     getImg: function(num) {
       return num ? require("../assets/images/" + num + ".png") : null;
@@ -154,6 +158,7 @@ export default {
           id: id,
           value: newVal,
           looped: false
+          //TODO: set new clickable attribute to false
         });
       }
     },
