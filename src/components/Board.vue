@@ -42,14 +42,6 @@ export default {
         //extra logic to end game
         clearInterval(this.procId);
       }
-    },
-
-    anyLooped: function(newVal) {
-      if (newVal) {
-        this.setStatus("wait");
-      } else {
-        this.setStatus("go");
-      }
     }
   },
 

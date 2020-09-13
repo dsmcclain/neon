@@ -16,7 +16,7 @@ const getters = {
   openTiles: state => state.tiles.filter(tile => tile.value === 0),
   lowestOpenTile: (state, getters) =>
     getters.openTiles.sort((a, b) => a.id - b.id)[0],
-  anyLooped: state => state.tiles.some(tile => tile.value === 7)
+  anyLooped: state => state.tiles.some(tile => tile.value > 6)
 };
 
 const actions = {

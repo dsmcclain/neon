@@ -74,13 +74,13 @@ export default {
     looped: function() {
       if (this.looped === true) {
         this.disableTiles();
-        this.disappearLoop(this.path);
+        setTimeout(() => this.disappearLoop(this.path), 1000);
       }
     }
   },
 
   methods: {
-    ...mapActions(["incrementScore", "setTile", "setValue", "setLooped"]),
+    ...mapActions(["incrementScore", "setTile", "setValue", "setLooped", "setStatus"]),
 
     getImg: function(num) {
       return num ? require("../assets/images/" + num + ".png") : null;
@@ -109,6 +109,7 @@ export default {
         ) {
           this.setLooped({
             id: this.id,
+            value: this.value,
             looped: true
           });
           return true;
@@ -145,10 +146,13 @@ export default {
     },
 
     disableTiles: function() {
+      this.waitGame();
       for (let id of this.path) {
+        const newVal =
+          this.$store.state.tiles.filter(tile => tile.id === id)[0].value + 6;
         this.setTile({
           id: id,
-          value: 7,
+          value: newVal,
           looped: false
         });
       }
@@ -169,6 +173,11 @@ export default {
           index++;
         }
       }, 75);
+      this.setStatus("go");
+    },
+
+    waitGame: function() {
+      this.setStatus("wait");
     }
   }
 };
