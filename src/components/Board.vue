@@ -1,12 +1,15 @@
 <template>
   <div class="board-wrapper">
-    <div v-if="gameOver" class="game-over-screen">
+    <div v-if="gameOver" class="message-screen">
       <h1>GAME OVER!</h1>
       <h1>YOU SCORED</h1>
-      <div class="final-score">{{ this.getScore }}</div>
+      <div class="final-score">{{ this.finalScore }}</div>
       <h2>WELL DONE! MAYBE!</h2>
     </div>
-    <div v-else class="board">
+    <div v-if="gamePaused" class="message-screen">
+      <h1>GAME PAUSED</h1>
+    </div>
+    <div v-if="!gamePaused && !gameOver" class="board">
       <div v-for="num in 81" :class="`tile-wrapper-${num}`" :key="num">
         <Tile :id="num"></Tile>
       </div>
@@ -27,16 +30,20 @@ export default {
   data() {
     return {
       procId: null,
-      gameOver: false
+      gamePaused: false,
+      gameOver: false,
+      finalScore: 0
     };
   },
 
   computed: {
-    ...mapGetters(["openTiles",
+    ...mapGetters([
+      "openTiles",
       "allTiles",
       "lowestOpenTile",
       "anyLooped",
-      "getScore"]),
+      "getScore"
+    ]),
 
     status: function() {
       return this.$store.state.status;
@@ -46,17 +53,20 @@ export default {
   watch: {
     status: function(newVal) {
       if (newVal === "go") {
+        this.gamePaused = false;
+        this.gameOver = false;
         this.runGame();
-      } else if (newVal === "pause" || newVal === "wait") {
+      } else if (newVal === "pause") {
         clearInterval(this.procId);
-      } else if (newVal === "stop") {
-        this.endGame()
+        this.gamePaused = true;
+      } else if (newVal === "wait") {
+        clearInterval(this.procId);
       }
     }
   },
 
   methods: {
-    ...mapActions(["setStatus", "setTile"]),
+    ...mapActions(["setStatus", "setTile", "resetScore"]),
 
     fillEmptyTile: function() {
       if (this.lowestOpenTile === undefined) {
@@ -77,8 +87,11 @@ export default {
     },
 
     endGame: function() {
+      this.finalScore = this.getScore;
       this.gameOver = true;
       clearInterval(this.procId);
+      this.resetScore();
+      this.createBoard();
     },
 
     createBoard: function() {

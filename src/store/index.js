@@ -24,6 +24,10 @@ const actions = {
     commit("incrementScore", int);
   },
 
+  resetScore({ commit }) {
+    commit("resetScore");
+  },
+
   setStatus({ commit }, status) {
     commit("setStatus", status);
   },
@@ -44,6 +48,10 @@ const actions = {
 const mutations = {
   incrementScore(state, data) {
     state.score += data;
+  },
+
+  resetScore(state) {
+    state.score = 0;
   },
 
   setStatus(state, data) {
