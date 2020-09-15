@@ -54,13 +54,13 @@ export default {
       if (this.transactions < 30) {
         return 1200;
       } else if (this.transactions > 29 && this.transactions < 60) {
-        return 1100;
+        return 1050;
       } else if (this.transactions > 59 && this.transactions < 90) {
-        return 1000;
+        return 950;
       } else if (this.transactions > 89 && this.transactions < 120) {
-        return 900;
+        return 850;
       } else {
-        return 800;
+        return 750;
       }
     }
   },
@@ -96,7 +96,13 @@ export default {
         this.endGame();
       } else {
         this.transactions += 1;
-        const value = this.getRandomInt(1, 6);
+        let value;
+        const inflection = this.getRandomInt(1, 5);
+        if (inflection === 1) {
+          value = this.getRandomInt(3, 6);
+        } else {
+          value = this.getRandomInt(1, 6);
+        }
         this.setTile({
           id: this.lowestOpenTile.id,
           value: value,
