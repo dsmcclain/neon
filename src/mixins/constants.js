@@ -47,7 +47,7 @@ export default Object.freeze({
     27: { north: 26, east: 52, south: 28, west: 10 },
     28: { north: 27, east: 53, south: 29, west: 11 },
     29: { north: 28, east: 54, south: 30, west: 12 },
-    30: { north: 28, east: 55, south: 31, west: 13 },
+    30: { north: 29, east: 55, south: 31, west: 13 },
     31: { north: 30, east: 56, south: 58, west: 32 },
     32: { north: 13, east: 31, south: 59, west: 33 },
     33: { north: 14, east: 32, south: 60, west: 34 },

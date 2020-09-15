@@ -1,4 +1,17 @@
 
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+img {
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+}
+
 .container {
   background-color: black;
   display: grid;
@@ -32,17 +45,19 @@
 
 .name {
   grid-row: 1 / 2;
+  display: flex;
+  align-items: flex-end;
 }
 
 .by-line {
   color: white;
+  grid-row: 2 / 3;
 }
 
 .display-score {
   grid-row: 4 / 5;
   display: flex;
-  justify-content: center;
-  align-items: end;
+  align-items: flex-end;
   color: white;
 }
 

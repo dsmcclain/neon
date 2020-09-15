@@ -54,13 +54,13 @@ export default {
       if (this.transactions < 30) {
         return 1200;
       } else if (this.transactions > 29 && this.transactions < 60) {
-        return 1000;
+        return 1100;
       } else if (this.transactions > 59 && this.transactions < 90) {
-        return 900;
+        return 1000;
       } else if (this.transactions > 89 && this.transactions < 120) {
-        return 800;
+        return 900;
       } else {
-        return 700;
+        return 800;
       }
     }
   },
