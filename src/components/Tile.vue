@@ -144,7 +144,8 @@ export default {
       const newVal = constants.ROTATIONS[this.value];
       this.setValue({
         id: this.id,
-        value: newVal
+        value: newVal,
+        looped: this.looped
       });
       this.checkLoop();
     },

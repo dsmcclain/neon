@@ -29,6 +29,7 @@ export default {
 
   data() {
     return {
+      transactions: 0,
       procId: null,
       gamePaused: false,
       gameOver: false,
@@ -47,6 +48,20 @@ export default {
 
     status: function() {
       return this.$store.state.status;
+    },
+
+    speed: function() {
+      if (this.transactions < 30) {
+        return 1200;
+      } else if (this.transactions > 29 && this.transactions < 60) {
+        return 1000;
+      } else if (this.transactions > 59 && this.transactions < 90) {
+        return 900;
+      } else if (this.transactions > 89 && this.transactions < 120) {
+        return 800;
+      } else {
+        return 700;
+      }
     }
   },
 
@@ -62,6 +77,13 @@ export default {
       } else if (newVal === "wait") {
         clearInterval(this.procId);
       }
+    },
+
+    speed: function(newVal) {
+      if (newVal && this.status === "go") {
+        clearInterval(this.procId);
+        this.runGame();
+      }
     }
   },
 
@@ -73,6 +95,7 @@ export default {
         this.setStatus("stop");
         this.endGame();
       } else {
+        this.transactions += 1;
         const value = this.getRandomInt(1, 6);
         this.setTile({
           id: this.lowestOpenTile.id,
@@ -83,10 +106,11 @@ export default {
     },
 
     runGame: function() {
-      this.procId = setInterval(() => this.fillEmptyTile(), 1000);
+      this.procId = setInterval(() => this.fillEmptyTile(), this.speed);
     },
 
     endGame: function() {
+      this.transactions = 0;
       this.finalScore = this.getScore;
       this.gameOver = true;
       clearInterval(this.procId);
