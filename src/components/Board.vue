@@ -53,12 +53,12 @@ export default {
     speed: function() {
       if (this.transactions < 30) {
         return 1200;
-      } else if (this.transactions > 29 && this.transactions < 60) {
-        return 1050;
-      } else if (this.transactions > 59 && this.transactions < 90) {
-        return 950;
-      } else if (this.transactions > 89 && this.transactions < 120) {
-        return 850;
+      } else if (this.transactions > 29 && this.transactions < 70) {
+        return 1100;
+      } else if (this.transactions > 69 && this.transactions < 100) {
+        return 1000;
+      } else if (this.transactions > 99 && this.transactions < 130) {
+        return 900;
       } else {
         return 750;
       }
@@ -97,7 +97,7 @@ export default {
       } else {
         this.transactions += 1;
         let value;
-        const inflection = this.getRandomInt(1, 5);
+        const inflection = this.getRandomInt(1, 4);
         if (inflection === 1) {
           value = this.getRandomInt(3, 6);
         } else {

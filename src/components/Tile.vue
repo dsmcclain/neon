@@ -178,7 +178,7 @@ export default {
           });
           index++;
         }
-      }, 75);
+      }, 0);
       this.setStatus("go");
     },
 
