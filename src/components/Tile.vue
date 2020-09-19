@@ -165,20 +165,14 @@ export default {
     },
 
     disappearLoop: function(path) {
-      let index = 0;
       this.incrementScore(path.length);
-      const loopId = setInterval(() => {
-        if (index > path.length - 1) {
-          clearInterval(loopId);
-        } else {
-          this.setValue({
-            id: path[index],
-            value: 0,
-            looped: false
-          });
-          index++;
-        }
-      }, 0);
+      for (let i = 0; i < path.length; i++) {
+        this.setValue({
+          id: path[i],
+          value: 0,
+          looped: false
+        });
+      }
       this.setStatus("go");
     },
 

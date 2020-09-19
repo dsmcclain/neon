@@ -51,16 +51,18 @@ export default {
     },
 
     speed: function() {
-      if (this.transactions < 30) {
-        return 1200;
-      } else if (this.transactions > 29 && this.transactions < 70) {
+      if (this.transactions < 40) {
+        return 1250;
+      } else if (this.transactions > 39 && this.transactions < 80) {
         return 1100;
-      } else if (this.transactions > 69 && this.transactions < 100) {
+      } else if (this.transactions > 79 && this.transactions < 120) {
         return 1000;
-      } else if (this.transactions > 99 && this.transactions < 130) {
+      } else if (this.transactions > 119 && this.transactions < 160) {
         return 900;
+      } else if (this.transactions > 159 && this.transactions < 200) {
+        return 800;
       } else {
-        return 750;
+        return 725;
       }
     }
   },
@@ -97,7 +99,7 @@ export default {
       } else {
         this.transactions += 1;
         let value;
-        const inflection = this.getRandomInt(1, 4);
+        const inflection = this.getRandomInt(1, 5);
         if (inflection === 1) {
           value = this.getRandomInt(3, 6);
         } else {
