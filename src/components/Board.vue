@@ -4,7 +4,6 @@
       <h1>GAME OVER!</h1>
       <h1>YOU SCORED</h1>
       <div class="final-score">{{ this.finalScore }}</div>
-      <h2>WELL DONE! MAYBE!</h2>
     </div>
     <div v-if="gamePaused" class="message-screen">
       <h1>GAME PAUSED</h1>
