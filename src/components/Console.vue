@@ -1,5 +1,5 @@
 <template>
-  <div class="console">
+  <div v-if="!showInstructions" class="console">
     <h3 class="title name">NEON</h3>
     <h4 class="by-line">the game</h4>
     <div class="display-score">
@@ -7,8 +7,11 @@
     </div>
     <h1 class="title score-label">SCORE</h1>
     <div class="controls">
-      <button class="main-button" v-on:click="this.buttonAction">
+      <button class="neon-button main" v-on:click="this.buttonAction">
         {{ this.buttonText }}
+      </button>
+      <button class="neon-button main" v-on:click="this.toggleInstructions">
+        HOW?
       </button>
     </div>
   </div>
@@ -22,6 +25,10 @@ export default {
 
   computed: {
     ...mapGetters(["getScore", "getStatus"]),
+
+    showInstructions: function() {
+      return this.getStatus === "instructions";
+    },
 
     buttonAction: function() {
       return this.getStatus === "go" ? this.pauseGame : this.startGame;
@@ -54,6 +61,10 @@ export default {
 
     pauseGame: function() {
       this.setStatus("pause");
+    },
+
+    toggleInstructions: function() {
+      this.setStatus("instructions");
     }
   }
 };

@@ -80,11 +80,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(["incrementScore",
+    ...mapActions([
+      "incrementScore",
       "setTile",
       "setValue",
       "setLooped",
-      "setStatus"]),
+      "setStatus"
+    ]),
 
     getImg: function(num) {
       return num ? require("../assets/images/" + num + ".png") : null;

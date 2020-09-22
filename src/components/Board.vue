@@ -1,16 +1,58 @@
 <template>
   <div class="board-wrapper">
-    <div v-if="gameOver" class="message-screen">
-      <h1>GAME OVER!</h1>
-      <h1>YOU SCORED</h1>
-      <div class="final-score">{{ this.finalScore }}</div>
+    <div v-if="showInstructions" class="instructions-screen">
+      <div class="instructions-row top">
+        <img src="../assets/images/neon-wave.png" />
+      </div>
+      <div class="welcome-message">Welcome to Neon!</div>
+      <h1>How To Play:</h1>
+      <div class="instructions-row middle">
+        <div class="instructions-section two-column">
+          <img src="../assets/images/neon-unlooped.png" />
+          <h1>Glass Tubes will appear on screen</h1>
+        </div>
+        <div class="instructions-section two-column">
+          <div class="instructions-image-group">
+            <img src="../assets/images/4.png" />
+            <span class="arrow">&#8680;</span>
+            <img src="../assets/images/5.png" />
+            <span class="arrow">&#8680;</span>
+            <img src="../assets/images/6.png" />
+          </div>
+          <h1>Click on the Tubes to rotate:</h1>
+        </div>
+      </div>
+      <div class="instructions-row bottom">
+        <div class="instructions-section">
+          <img src="../assets/images/neon-loop.png" />
+          <h1>Create a complete loop to fill the tubes with neon light!</h1>
+        </div>
+      </div>
+      <div class="instructions-section bottom">
+        <h1>
+          Try to complete as many loops as you can before the screen fills up.
+        </h1>
+      </div>
+      <button
+        class="neon-button"
+        v-on:click="this.hideInstructions"
+      >
+        Got it.
+      </button>
     </div>
-    <div v-if="gamePaused" class="message-screen">
-      <h1>GAME PAUSED</h1>
-    </div>
-    <div v-if="!gamePaused && !gameOver" class="board">
-      <div v-for="num in 81" :class="`tile-wrapper-${num}`" :key="num">
-        <Tile :id="num"></Tile>
+    <div v-else>
+      <div v-if="gameOver" class="message-screen">
+        <h1>GAME OVER!</h1>
+        <h1>YOU SCORED</h1>
+        <div class="final-score">{{ this.finalScore }}</div>
+      </div>
+      <div v-if="gamePaused" class="message-screen">
+        <h1>GAME PAUSED</h1>
+      </div>
+      <div v-if="!gamePaused && !gameOver" class="board">
+        <div v-for="num in 81" :class="`tile-wrapper-${num}`" :key="num">
+          <Tile :id="num"></Tile>
+        </div>
       </div>
     </div>
   </div>
@@ -32,6 +74,7 @@ export default {
       procId: null,
       gamePaused: false,
       gameOver: false,
+      gameRunning: false,
       finalScore: 0
     };
   },
@@ -47,6 +90,10 @@ export default {
 
     status: function() {
       return this.$store.state.status;
+    },
+
+    showInstructions: function() {
+      return this.status === "instructions";
     },
 
     speed: function() {
@@ -70,11 +117,17 @@ export default {
     status: function(newVal) {
       if (newVal === "go") {
         this.gamePaused = false;
+        this.gameRunning = true;
         this.gameOver = false;
         this.runGame();
       } else if (newVal === "pause") {
         clearInterval(this.procId);
         this.gamePaused = true;
+      } else if (newVal === "instructions") {
+        clearInterval(this.procId);
+        if (this.gameRunning) {
+          this.gamePaused = true;
+        }
       } else if (newVal === "wait") {
         clearInterval(this.procId);
       }
@@ -90,6 +143,10 @@ export default {
 
   methods: {
     ...mapActions(["setStatus", "setTile", "resetScore"]),
+
+    hideInstructions: function() {
+      this.setStatus("stop");
+    },
 
     fillEmptyTile: function() {
       if (this.lowestOpenTile === undefined) {
